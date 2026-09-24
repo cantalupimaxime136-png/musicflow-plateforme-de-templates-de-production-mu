@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon SaaS</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #0d0f16; color: #f5f6f8; }
+    main { width: 100%; max-width: 460px; }
+    h1 { font-size: 32px; line-height: 1.15; margin: 0 0 12px; }
+    p { color: #8890a0; line-height: 1.55; margin: 0 0 20px; }
+    form { display: flex; gap: 8px; }
+    input { flex: 1; min-width: 0; padding: 14px 16px; border-radius: 12px; border: 1px solid #2a2f3d;
+      background: #171a24; color: inherit; font-size: 16px; }
+    button { padding: 14px 20px; border: 0; border-radius: 12px; background: #4c6fff; color: #fff;
+      font-weight: 600; font-size: 16px; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: default; }
+    #status { margin-top: 14px; min-height: 1.4em; font-size: 14px; }
+    .ok { color: #6ee7a8; } .error { color: #ff8a8a; } .info { color: #8890a0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Ton SaaS arrive.</h1>
+    <p>Laisse ton email pour être prévenu du lancement.</p>
+    <form id="form">
+      <input id="email" type="email" required placeholder="ton@email.com" autocomplete="email">
+      <button id="submit" type="submit">Me prévenir</button>
+    </form>
+    <div id="status" class="info" role="status"></div>
+  </main>
+
+  <!--
+    ╔════════════════════════════════════════════════════════════════════════════╗
+    ║  Ce fichier est un point de départ : remplace TOUT son contenu par le      ║
+    ║  fichier index.html généré par CashSaaS (dashboard > "Ton code").          ║
+    ║  Le fichier config.js (ci-dessous) est créé automatiquement au build.      ║
+    ╚════════════════════════════════════════════════════════════════════════════╝
+  -->
+  <script src="/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const status = document.getElementById("status");
+    const form = document.getElementById("form");
+    const button = document.getElementById("submit");
+    const env = window.ENV || {};
+
+    const say = (text, kind) => { status.textContent = text; status.className = kind; };
+
+    if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
+      button.disabled = true;
+      say("Supabase n'est pas encore branché : ajoute SUPABASE_URL et SUPABASE_ANON_KEY dans Vercel, puis redéploie.", "info");
+    } else {
+      const supabase = window.supabase.createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        button.disabled = true;
+        say("Envoi...", "info");
+        const { error } = await supabase.from("leads").insert({ email: document.getElementById("email").value.trim() });
+        if (error) {
+          say("Impossible d'enregistrer ton email pour le moment. Réessaie plus tard.", "error");
+          console.error(error);
+        } else {
+          form.reset();
+          say("Merci, c'est noté !", "ok");
+        }
+        button.disabled = false;
+      });
+    }
+  </script>
+</body>
+</html>
