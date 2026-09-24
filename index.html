@@ -1,75 +1,532 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mon SaaS</title>
-  <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #0d0f16; color: #f5f6f8; }
-    main { width: 100%; max-width: 460px; }
-    h1 { font-size: 32px; line-height: 1.15; margin: 0 0 12px; }
-    p { color: #8890a0; line-height: 1.55; margin: 0 0 20px; }
-    form { display: flex; gap: 8px; }
-    input { flex: 1; min-width: 0; padding: 14px 16px; border-radius: 12px; border: 1px solid #2a2f3d;
-      background: #171a24; color: inherit; font-size: 16px; }
-    button { padding: 14px 20px; border: 0; border-radius: 12px; background: #4c6fff; color: #fff;
-      font-weight: 600; font-size: 16px; cursor: pointer; }
-    button:disabled { opacity: .5; cursor: default; }
-    #status { margin-top: 14px; min-height: 1.4em; font-size: 14px; }
-    .ok { color: #6ee7a8; } .error { color: #ff8a8a; } .info { color: #8890a0; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicFlow - Templates & Tutoriels Musicaux</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #667eea;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+        }
+        .hero h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 80px 0;
+        }
+        .feature-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 30px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-5px);
+        }
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #667eea;
+        }
+        .feature-card p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        .pricing-section {
+            text-align: center;
+            padding: 60px 0;
+        }
+        .pricing-section h2 {
+            font-size: 42px;
+            margin-bottom: 50px;
+        }
+        .pricing-card {
+            background: rgba(102, 126, 234, 0.15);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .pricing-card.featured {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.25);
+            transform: scale(1.05);
+        }
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .price {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #667eea;
+        }
+        .price-period {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        .features-list {
+            text-align: left;
+            margin: 30px 0;
+        }
+        .features-list li {
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+        }
+        .features-list li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .auth-section {
+            display: none;
+            max-width: 400px;
+            margin: 40px auto;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .auth-section.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+        }
+        .form-group input::placeholder {
+            color: #999;
+        }
+        .form-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #667eea;
+        }
+        .dashboard {
+            display: none;
+            padding: 40px 0;
+        }
+        .dashboard.active {
+            display: block;
+        }
+        .dashboard h2 {
+            margin-bottom: 30px;
+            font-size: 36px;
+        }
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .template-item {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .template-item h4 {
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+        .template-item p {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        .template-item a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .template-item a:hover {
+            background: #764ba2;
+        }
+        .logout-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        .status-message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .status-message.success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        .status-message.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <main>
-    <h1>Ton SaaS arrive.</h1>
-    <p>Laisse ton email pour être prévenu du lancement.</p>
-    <form id="form">
-      <input id="email" type="email" required placeholder="ton@email.com" autocomplete="email">
-      <button id="submit" type="submit">Me prévenir</button>
-    </form>
-    <div id="status" class="info" role="status"></div>
-  </main>
+    <div class="container">
+        <header>
+            <div class="logo">MusicFlow</div>
+            <nav>
+                <a href="#features">Fonctionnalités</a>
+                <a href="#pricing">Tarifs</a>
+                <a href="javascript:void(0)" onclick="toggleAuth()" id="auth-link">Connexion</a>
+                <button class="logout-btn" id="logout-btn" style="display: none;" onclick="logout()">Déconnexion</button>
+            </nav>
+        </header>
 
-  <!--
-    ╔════════════════════════════════════════════════════════════════════════════╗
-    ║  Ce fichier est un point de départ : remplace TOUT son contenu par le      ║
-    ║  fichier index.html généré par CashSaaS (dashboard > "Ton code").          ║
-    ║  Le fichier config.js (ci-dessous) est créé automatiquement au build.      ║
-    ╚════════════════════════════════════════════════════════════════════════════╝
-  -->
-  <script src="/config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const status = document.getElementById("status");
-    const form = document.getElementById("form");
-    const button = document.getElementById("submit");
-    const env = window.ENV || {};
+        <section class="hero" id="home">
+            <h1>Crée ta musique plus vite</h1>
+            <p>Accès à des templates professionnels Ableton/FL Studio et des tutoriels pour booster ta prod musicale.</p>
+            <button class="cta-button" onclick="toggleAuth()">Commencer à 19€/mois</button>
+        </section>
 
-    const say = (text, kind) => { status.textContent = text; status.className = kind; };
+        <section id="features" class="features">
+            <div class="feature-card">
+                <h3>Templates Prêts à l'Emploi</h3>
+                <p>Des templates Ableton et FL Studio créés par des producteurs expérimentés. Démarre tes tracks en secondes.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Tutoriels Vidéo Complets</h3>
+                <p>Des vidéos courtes et ciblées pour maîtriser chaque aspect : sound design, mixing, mastering.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Communauté Discord Privée</h3>
+                <p>Connecte-toi avec d'autres producteurs, partage tes productions et reçois des retours directs.</p>
+            </div>
+        </section>
 
-    if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
-      button.disabled = true;
-      say("Supabase n'est pas encore branché : ajoute SUPABASE_URL et SUPABASE_ANON_KEY dans Vercel, puis redéploie.", "info");
-    } else {
-      const supabase = window.supabase.createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        button.disabled = true;
-        say("Envoi...", "info");
-        const { error } = await supabase.from("leads").insert({ email: document.getElementById("email").value.trim() });
-        if (error) {
-          say("Impossible d'enregistrer ton email pour le moment. Réessaie plus tard.", "error");
-          console.error(error);
-        } else {
-          form.reset();
-          say("Merci, c'est noté !", "ok");
+        <section id="pricing" class="pricing-section">
+            <h2>Tarification Simple</h2>
+            <div class="pricing-card featured">
+                <div class="badge">Le plus populaire</div>
+                <h3>Accès Complet</h3>
+                <div class="price">19€</div>
+                <div class="price-period">par mois, sans engagement</div>
+                <ul class="features-list">
+                    <li>Accès à tous les templates</li>
+                    <li>Nouveaux templates chaque mois</li>
+                    <li>Tous les tutoriels vidéos</li>
+                    <li>Communauté Discord privée</li>
+                    <li>Support par email</li>
+                </ul>
+                <button class="cta-button" style="width: 100%;" onclick="toggleAuth()">S'inscrire maintenant</button>
+            </div>
+        </section>
+
+        <section class="auth-section" id="auth-section">
+            <h2>Connexion / Inscription</h2>
+            <div id="status-message"></div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="ton@email.com">
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" id="password" placeholder="Mot de passe">
+            </div>
+            <button class="cta-button" style="width: 100%;" onclick="handleAuth()">Connexion / Inscription</button>
+        </section>
+
+        <section class="dashboard" id="dashboard">
+            <h2>Bienvenue à MusicFlow!</h2>
+            <p style="color: #ccc; margin-bottom: 40px;">Accès à tous les templates et tutoriels.</p>
+            
+            <h3 style="margin-bottom: 20px; margin-top: 40px;">Templates Disponibles</h3>
+            <div class="templates-grid">
+                <div class="template-item">
+                    <h4>Trap - Playboi Carti Style</h4>
+                    <p>Template complet avec drums, melodies et FX. 120 BPM.</p>
+                    <a href="javascript:void(0)" onclick="downloadTemplate('trap-carti')">Télécharger</a>
+                </div>
+                <div class="template-item">
+                    <h4>Lo-Fi Hip-Hop Beats</h4>
+                    <p>Ambiance chill et relaxante. Samples inclus. 85 BPM.</p>
+                    <a href="javascript:void(0)" onclick="downloadTemplate('lofi-hiphop')">Télécharger</a>
+                </div>
+                <div class="template-item">
+                    <h4>Drill - UK Style</h4>
+                    <p>Template drill classique avec basses lourdes. 150 BPM.</p>
+                    <a href="javascript:void(0)" onclick="downloadTemplate('drill-uk')">Télécharger</a>
+                </div>
+                <div class="template-item">
+                    <h4>Deep House Essentials</h4>
+                    <p>Fond sonore deep house professionnel. 120 BPM.</p>
+                    <a href="javascript:void(0)" onclick="downloadTemplate('deephouse')">Télécharger</a>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 20px; margin-top: 40px;">Tutoriels Récents</h3>
+            <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="color: #667eea; margin-bottom: 10px;">Comment Mixer une Track Trap en 10 minutes</h4>
+                <p style="color: #ccc; margin-bottom: 15px;">Apprends les techniques de mixing rapide pour tes trap beats.</p>
+                <a href="javascript:void(0)" style="color: #667eea; text-decoration: none;" onclick="alert('Tutoriel vidéo (intégration YouTube/Vimeo recommandée)')">Regarder le tutoriel →</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 MusicFlow. Crée ta musique, libère ta créativité.</p>
+        </footer>
+    </div>
+
+    <script src="/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        let supabase = null;
+        let currentUser = null;
+
+        async function initSupabase() {
+            if (!window.ENV || !window.ENV.SUPABASE_URL || !window.ENV.SUPABASE_ANON_KEY) {
+                console.error('Configuration Supabase manquante');
+                return;
+            }
+            supabase = window.supabase.createClient(
+                window.ENV.SUPABASE_URL,
+                window.ENV.SUPABASE_ANON_KEY
+            );
+            checkAuthStatus();
         }
-        button.disabled = false;
-      });
-    }
-  </script>
+
+        async function checkAuthStatus() {
+            if (!supabase) return;
+            const { data: { user } } = await supabase.auth.getUser();
+            currentUser = user;
+            updateUI();
+        }
+
+        function updateUI() {
+            const authLink = document.getElementById('auth-link');
+            const logoutBtn = document.getElementById('logout-btn');
+            const authSection = document.getElementById('auth-section');
+            const dashboard = document.getElementById('dashboard');
+            const heroSection = document.querySelector('.hero');
+            const pricingSection = document.getElementById('pricing');
+
+            if (currentUser) {
+                authLink.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+                authSection.classList.remove('active');
+                dashboard.classList.add('active');
+                heroSection.style.display = 'none';
+                pricingSection.style.display = 'none';
+            } else {
+                authLink.style.display = 'inline';
+                logoutBtn.style.display = 'none';
+                authSection.classList.remove('active');
+                dashboard.classList.remove('active');
+                heroSection.style.display = 'block';
+                pricingSection.style.display = 'block';
+            }
+        }
+
+        function toggleAuth() {
+            const authSection = document.getElementById('auth-section');
+            authSection.classList.toggle('active');
+            if (authSection.classList.contains('active')) {
+                document.getElementById('email').focus();
+            }
+        }
+
+        async function handleAuth() {
+            if (!supabase) {
+                showMessage('Configuration Supabase non initialisée', 'error');
+                return;
+            }
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const statusDiv = document.getElementById('status-message');
+
+            if (!email || !password) {
+                showMessage('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+                if (error && error.status === 400) {
+                    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                        email,
+                        password
+                    });
+
+                    if (signUpError) {
+                        showMessage(signUpError.message || 'Erreur lors de l\'inscription', 'error');
+                        return;
+                    }
+
+                    showMessage('Inscription réussie! Veuillez vérifier votre email.', 'success');
+                    currentUser = signUpData.user;
+                    updateUI();
+                } else if (error) {
+                    showMessage(error.message || 'Erreur d\'authentification', 'error');
+                } else {
+                    currentUser = data.user;
+                    showMessage('Connecté avec succès!', 'success');
+                    document.getElementById('email').value = '';
+                    document.getElementById('password').value = '';
+                    updateUI();
+                }
+            } catch (err) {
+                showMessage('Erreur: ' + err.message, 'error');
+            }
+        }
+
+        function showMessage(message, type) {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + type;
+            setTimeout(() => {
+                statusDiv.textContent = '';
+                statusDiv.className = 'status-message';
+            }, 5000);
+        }
+
+        async function logout() {
+            if (!supabase) return;
+            await supabase.auth.signOut();
+            currentUser = null;
+            updateUI();
+        }
+
+        function downloadTemplate(templateId) {
+            alert('Template "' + templateId + '" : téléchargement simulé. Intégrez une vraie livraison (Stripe + S3 ou Supabase Storage)');
+        }
+
+        window.addEventListener('load', initSupabase);
+    </script>
 </body>
 </html>
